@@ -22,10 +22,10 @@ class Facility extends Model
     /**
      * A facility can have many services.
      */
-    // public function services()
-    // {
-    //     return $this ->hasMany(Services::class);
-    // }
+    public function services()
+    {
+        return $this->hasMany(Services::class, 'facility_id', 'id');
+    }
 
 
      /**

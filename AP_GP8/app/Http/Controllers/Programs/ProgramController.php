@@ -82,5 +82,15 @@ class ProgramController extends Controller
         return redirect()->route('programs.index')
             ->with('success', 'Program deleted successfully.');
     }
+
+    /**
+     * List all projects under a program.
+     */
+    public function projects(Program $program)
+    {
+        $program->load('projects');
+
+        return view('projects.program', compact('program'));
+    }
 }
 

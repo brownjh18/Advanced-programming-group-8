@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\projects\ProjectsController;
 use App\Http\Controllers\Programs\ProgramController;
 use App\Http\Controllers\Facilities\FacilityController;
 use Illuminate\Support\Facades\Route;
@@ -20,15 +21,10 @@ Route::resource('programs', ProgramController::class);
 
 
 
-
-
-
-
-
-
-
-
 Route::resource('facilities', FacilityController::class);
+
+
+Route::resource('projects', ProjectsController::class);
 
 
 require __DIR__.'/settings.php';

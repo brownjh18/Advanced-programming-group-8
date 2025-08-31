@@ -17,5 +17,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::resource('programs', ProgramController::class);
 
+// Nested route: list all projects under a program
+Route::get('programs/{program}/projects', [ProgramController::class, 'projects'])->name('programs.projects.index');
+
+// Projects resource routes
+use App\Http\Controllers\projects\ProjectsController;
+Route::resource('projects', ProjectsController::class);
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

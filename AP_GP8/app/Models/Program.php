@@ -32,10 +32,18 @@ class Program extends Model
     ];
 
     /**
+     * Use program_id for route model binding.
+     */
+    public function getRouteKeyName()
+    {
+        return 'program_id';
+    }
+
+    /**
      * Get the projects for the program.
      */
-    // public function projects()
-    // {
-    //     return $this->hasMany(Project::class, 'ProgramId');
-    // }
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'program_id', 'program_id');
+    }
 }

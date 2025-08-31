@@ -8,6 +8,7 @@
             </div>
             <div class="pull-right">
                 <a class="btn btn-primary" href="{{ route('programs.index') }}"> Back</a>
+                <a class="btn btn-info" href="{{ route('programs.projects.index', $program->program_id) }}"> View Projects</a>
             </div>
         </div>
     </div>

@@ -42,6 +42,7 @@ class Project extends Model
      */
     protected $fillable = [
         'project_id',
+        'project_code',
         'program_id',
         'facility_id',
         'title',
@@ -70,18 +71,35 @@ class Project extends Model
     // }
 
     /**
-     * Get the participants for the project.
+     * Participants involved in this project (many-to-many).
      */
-    // public function participants()
-    // {
-    //     return $this->hasMany(Participant::class, 'project_id', 'project_id');
-    // }
+    public function participants()
+    {
+        return $this->belongsToMany(Participant::class, 'participant_project', 'project_id', 'participant_id');
+    }
 
     /**
      * Get the outcomes for the project.
      */
-    // public function outcomes()
-    // {
-    //     return $this->hasMany(Outcome::class, 'project_id', 'project_id');
-    // }
+    public function outcomes()
+    {
+        return $this->hasMany(Outcome::class, 'project_id', 'project_id');
+    }
+
+    protected static function booted()
+    {
+        static::creating(function (Project $project) {
+            if (empty($project->project_code) && !empty($project->title)) {
+                $base = strtoupper(preg_replace('/[^A-Z0-9]+/i', '-', $project->title));
+                $base = trim($base, '-');
+                $prefix = 'PRJ-';
+                $candidate = $prefix . substr($base, 0, 8);
+                $i = 1;
+                while (self::where('project_code', $candidate)->exists()) {
+                    $candidate = $prefix . substr($base, 0, 8) . '-' . $i++;
+                }
+                $project->project_code = $candidate;
+            }
+        });
+    }
 }

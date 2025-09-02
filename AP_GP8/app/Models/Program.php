@@ -24,6 +24,7 @@ class Program extends Model
 
     protected $fillable = [
         'program_id',
+        'program_code',
         'name',
         'description',
         'national_alignment',
@@ -45,5 +46,22 @@ class Program extends Model
     public function projects()
     {
         return $this->hasMany(Project::class, 'program_id', 'program_id');
+    }
+
+    protected static function booted()
+    {
+        static::creating(function (Program $program) {
+            if (empty($program->program_code) && !empty($program->name)) {
+                $base = strtoupper(preg_replace('/[^A-Z0-9]+/i', '-', $program->name));
+                $base = trim($base, '-');
+                $prefix = 'PRG-';
+                $candidate = $prefix . substr($base, 0, 8);
+                $i = 1;
+                while (self::where('program_code', $candidate)->exists()) {
+                    $candidate = $prefix . substr($base, 0, 8) . '-' . $i++;
+                }
+                $program->program_code = $candidate;
+            }
+        });
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\projects;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Program;
+use App\Models\Facility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -25,7 +26,8 @@ class ProjectsController extends Controller
     public function create()
     {
         $programs = Program::all();
-        return view('projects.create', compact('programs'));
+        $facilities = Facility::orderBy('name')->get();
+        return view('projects.create', compact('programs', 'facilities'));
     }
 
     /**
@@ -33,9 +35,12 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge([
+            'facility' => $request->input('facility') ?: null,
+        ]);
         $validated = $request->validate([
             'program_id' => 'required|string|exists:programs,program_id',
-            'facility_id' => 'nullable|string',
+            'facility' => 'nullable|string|exists:facilities,facility_id',
             'title' => 'required|string|max:255',
             'nature_of_project' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -45,6 +50,10 @@ class ProjectsController extends Controller
             'commercialization_plan' => 'nullable|string',
         ]);
 
+        if (array_key_exists('facility', $validated)) {
+            $validated['facility_id'] = $validated['facility'];
+            unset($validated['facility']);
+        }
         Project::create(['project_id' => (string) Str::uuid()] + $validated);
 
         return redirect()->route('projects.index')
@@ -66,7 +75,8 @@ class ProjectsController extends Controller
     public function edit(Project $project)
     {
         $programs = Program::all();
-        return view('projects.edit', compact('project', 'programs'));
+        $facilities = Facility::orderBy('name')->get();
+        return view('projects.edit', compact('project', 'programs', 'facilities'));
     }
 
     /**
@@ -74,9 +84,12 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $request->merge([
+            'facility' => $request->input('facility') ?: null,
+        ]);
         $validated = $request->validate([
             'program_id' => 'required|string|exists:programs,program_id',
-            'facility_id' => 'nullable|string',
+            'facility' => 'nullable|string|exists:facilities,facility_id',
             'title' => 'required|string|max:255',
             'nature_of_project' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -86,6 +99,10 @@ class ProjectsController extends Controller
             'commercialization_plan' => 'nullable|string',
         ]);
 
+        if (array_key_exists('facility', $validated)) {
+            $validated['facility_id'] = $validated['facility'];
+            unset($validated['facility']);
+        }
         $project->update($validated);
 
         return redirect()->route('projects.index')

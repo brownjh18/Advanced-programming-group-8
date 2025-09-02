@@ -28,7 +28,8 @@ return new class extends Migration
                 ->references('program_id')
                 ->on('programs')
                 ->onDelete('cascade');
-        });
+
+                    });
     }
 
     /**

@@ -42,8 +42,15 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="facility_id"><strong>Facility ID:</strong></label>
-                <input type="text" name="facility_id" id="facility_id" class="form-control" value="{{ $project->facility_id }}" placeholder="Facility ID">
+                <label for="facility"><strong>Facility:</strong></label>
+                <select name="facility" id="facility" class="form-control">
+                    <option value="">-- Select Facility (optional) --</option>
+                    @foreach ($facilities as $facility)
+                        <option value="{{ $facility->facility_id }}" {{ $project->facility_id === $facility->facility_id ? 'selected' : '' }}>
+                            {{ $facility->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
         </div>
 

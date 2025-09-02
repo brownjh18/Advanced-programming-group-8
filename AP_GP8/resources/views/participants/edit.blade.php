@@ -61,6 +61,21 @@
                 @endforeach
             </select>
         </div>
+
+        {{-- <div class="form-group mb-2">
+            <label>Assign to Project</label>
+            <select name="project_id" class="form-control">
+                <option value="">-- Select a Project --</option>
+                @foreach ($projects as $proj)
+                    <option value="{{ $proj->project_id }}">
+                        {{ $proj->title }}
+                        @if ($proj->program)
+                            ({{ $proj->program->name }})
+                        @endif
+                    </option>
+                @endforeach
+            </select>
+        </div> --}}
         <div class="form-group form-check mb-3">
             <input type="checkbox" name="cross_skill_trained" id="cross_skill_trained" value="1" class="form-check-input" {{ old('cross_skill_trained', $participant->cross_skill_trained) ? 'checked' : '' }}>
             <label class="form-check-label" for="cross_skill_trained">Cross-skill Trained</label>

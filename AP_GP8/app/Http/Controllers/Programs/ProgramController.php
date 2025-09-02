@@ -88,9 +88,8 @@ class ProgramController extends Controller
      */
     public function projects(Program $program)
     {
-        $program->load('projects');
-
-        return view('projects.program', compact('program'));
+        $projects = $program->projects;  // fetch projects under this program
+        return view('programs.projects', compact('projects', 'program'));
     }
 }
 

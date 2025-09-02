@@ -72,6 +72,6 @@ class Participant extends Model
      */
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'participant_project', 'participant_id', 'project_id');
+        return $this->belongsToOne(Project::class, 'participant_project', 'participant_id', 'project_id');
     }
 }

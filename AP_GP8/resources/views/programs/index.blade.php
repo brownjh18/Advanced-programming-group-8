@@ -38,6 +38,8 @@
 
                     <a class="btn btn-primary" href="{{ route('programs.edit', $program->program_id) }}">Edit</a>
 
+                    <a class="btn btn-secondary" href="{{ route('programs.projects', $program->program_id) }}">Projects</a>
+
                     @csrf
                     @method('DELETE')
 

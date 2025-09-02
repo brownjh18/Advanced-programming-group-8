@@ -17,7 +17,7 @@ class OutcomesController extends Controller
     public function index(Project $project)
     {
         $project->load('outcomes');
-        return view('outcomes.index', compact('project'));
+        return view('projects.outcomes.index', compact('project'));
     }
 
     /**
@@ -27,7 +27,7 @@ class OutcomesController extends Controller
     {
         $types = Outcome::OUTCOME_TYPES;
         $statuses = Outcome::COMMERCIALIZATION_STATUSES;
-        return view('outcomes.create', compact('project', 'types', 'statuses'));
+        return view('projects.outcomes.create', compact('project', 'types', 'statuses'));
     }
 
     /**
@@ -75,7 +75,7 @@ class OutcomesController extends Controller
 
         $types = Outcome::OUTCOME_TYPES;
         $statuses = Outcome::COMMERCIALIZATION_STATUSES;
-        return view('outcomes.edit', compact('project', 'outcome', 'types', 'statuses'));
+        return view('projects.outcomes.edit', compact('project', 'outcome', 'types', 'statuses'));
     }
 
     /**

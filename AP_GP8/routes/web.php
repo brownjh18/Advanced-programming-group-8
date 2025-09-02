@@ -1,7 +1,14 @@
 <?php
 
+
+use App\Http\Controllers\participants\ParticipantsController;
+use App\Http\Controllers\outcomes\OutcomesController;
+use App\Http\Controllers\facilities\FacilitiesController;
 use App\Http\Controllers\Programs\ProgramController;
+use App\Http\Controllers\equipment\EquipmentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\services\ServicesController;
+use App\Http\Controllers\projects\ProjectsController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -18,14 +25,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::resource('programs', ProgramController::class);
 
 // Nested route: list all projects under a program
-Route::get('programs/{program}/projects', [ProgramController::class, 'projects'])->name('programs.projects.index');
+Route::get('/programs/{program}/projects', [ProgramController::class, 'projects'])->name('programs.projects');
 
 // Projects resource routes
-use App\Http\Controllers\projects\ProjectsController;
+
 Route::resource('projects', ProjectsController::class);
 
 // Outcomes nested under projects
-use App\Http\Controllers\outcomes\OutcomesController;
+
 Route::get('projects/{project}/outcomes', [OutcomesController::class, 'index'])->name('projects.outcomes.index');
 Route::get('projects/{project}/outcomes/create', [OutcomesController::class, 'create'])->name('projects.outcomes.create');
 Route::post('projects/{project}/outcomes', [OutcomesController::class, 'store'])->name('projects.outcomes.store');
@@ -35,23 +42,26 @@ Route::delete('projects/{project}/outcomes/{outcome}', [OutcomesController::clas
 Route::get('projects/{project}/outcomes/{outcome}/download', [OutcomesController::class, 'download'])->name('projects.outcomes.download');
 
 // Services resource routes
-use App\Http\Controllers\services\ServicesController;
+
 Route::resource('services', ServicesController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
 // Facilities resource routes
-use App\Http\Controllers\facilities\FacilitiesController;
+
 Route::resource('facilities', FacilitiesController::class);
 
 // Equipment resource routes
-use App\Http\Controllers\equipment\EquipmentController;
+
 Route::get('facilities/{facility}/equipment', [EquipmentController::class, 'byFacility'])->name('facilities.equipment.index');
 Route::resource('equipment', EquipmentController::class);
 
 // Participants resource routes
-use App\Http\Controllers\participants\ParticipantsController;
+
 Route::resource('participants', ParticipantsController::class);
 Route::post('participants/{participant}/assign', [ParticipantsController::class, 'assignToProject'])->name('participants.assign');
 Route::delete('participants/{participant}/projects/{project}', [ParticipantsController::class, 'removeFromProject'])->name('participants.projects.remove');
+
+
+Route::resource('outcomes', OutcomesController::class);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
